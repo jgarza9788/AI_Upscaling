@@ -1,0 +1,8 @@
+# Python dependencies for AI Upscaling
+numpy
+opencv-python
+Pillow
+torch
+torchvision
+scikit-image
+
