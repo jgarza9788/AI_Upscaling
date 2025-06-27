@@ -1,1 +1,35 @@
-# AI_Upscaling
+# AI Upscaling
+
+This repository provides a simple script to upscale images. The script will try to use a local NVIDIA GPU when available via [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN). If a GPU is not available or the necessary libraries are missing, it falls back to a web API.
+
+## Requirements
+
+- Python 3.9+
+- [Pillow](https://pillow.readthedocs.io/en/stable/)
+- Optional: [PyTorch](https://pytorch.org/) with CUDA and the `realesrgan` package for local upscaling
+- Optional: `requests` for API fallback
+
+## Usage
+
+```bash
+python3 upscale.py path/to/image.jpg
+```
+
+If no image path is provided, the script will prompt for one.
+
+### Options
+
+- `-o`, `--output`: Path to save the upscaled image. Defaults to `input_upscaled.ext`.
+- `--scale`: Upscaling factor used by the local model (default: `4`).
+- `--api-endpoint`: URL of the fallback API.
+- `--api-key`: API key used for the fallback API.
+
+Set `UPSCALE_API_ENDPOINT` and `UPSCALE_API_KEY` environment variables to avoid passing them on every run.
+
+```bash
+UPSCALE_API_KEY=your-key python3 upscale.py image.png
+```
+
+## Notes
+
+The Real-ESRGAN model weights are not included in this repository. The `realesrgan` library will attempt to download them automatically if it has internet access.
