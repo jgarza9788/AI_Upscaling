@@ -12,10 +12,10 @@ This repository provides a simple script to upscale images. The script will try 
 ## Usage
 
 ```bash
-python3 upscale.py path/to/image.jpg
+python3 main.py path/to/image.jpg
 ```
 
-If no image path is provided, the script will prompt for one.
+If run without arguments, the script prints its available options along with an example.
 
 ### Options
 
@@ -27,7 +27,7 @@ If no image path is provided, the script will prompt for one.
 Set `UPSCALE_API_ENDPOINT` and `UPSCALE_API_KEY` environment variables to avoid passing them on every run.
 
 ```bash
-UPSCALE_API_KEY=your-key python3 upscale.py image.png
+UPSCALE_API_KEY=your-key python3 main.py image.png
 ```
 
 ## Notes

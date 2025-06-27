@@ -2,20 +2,15 @@ import argparse
 import os
 import sys
 
-try:
-    from PIL import Image
-except ImportError:
-    print("Pillow is required to run this script.")
-    sys.exit(1)
-
 
 def upscale_local(image_path: str, output_path: str, scale: int = 4):
     """Upscale using local RealESRGAN model if GPU is available."""
     try:
         import torch
+        from PIL import Image
         from realesrgan import RealESRGAN
     except ImportError as exc:
-        raise RuntimeError("RealESRGAN not installed") from exc
+        raise RuntimeError("Required libraries for local upscaling are missing") from exc
 
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA GPU not available")
@@ -35,9 +30,8 @@ def upscale_local(image_path: str, output_path: str, scale: int = 4):
         sr_image.save(output_path)
 
 
-import requests
-
 def upscale_via_api(image_path: str, output_path: str, api_endpoint: str, api_key: str | None = None):
+    import requests
     """Fallback method that sends the image to an external API."""
     headers = {}
     if api_key:
@@ -63,21 +57,25 @@ def upscale_via_api(image_path: str, output_path: str, api_endpoint: str, api_ke
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Upscale an image using local GPU or fallback API.")
+    parser = argparse.ArgumentParser(
+        description="Upscale an image using local GPU or fallback API.",
+        epilog="Example: python main.py image.jpg --scale 2",
+    )
     parser.add_argument('image', nargs='?', help='Path to the input image')
     parser.add_argument('-o', '--output', help='Output path for the upscaled image')
     parser.add_argument('--scale', type=int, default=4, help='Upscaling factor for the local model')
     parser.add_argument('--api-endpoint', default=os.getenv('UPSCALE_API_ENDPOINT', 'https://api.deepai.org/api/torch-srgan'), help='URL of the fallback API')
     parser.add_argument('--api-key', default=os.getenv('UPSCALE_API_KEY'), help='API key for the fallback API')
-    return parser.parse_args()
+    return parser.parse_args(), parser
 
 
-def main():
-    args = parse_args()
+def main(path_to_file: str | None = None):
+    args, parser = parse_args()
 
-    image_path = args.image
+    image_path = path_to_file or args.image
     if not image_path:
-        image_path = input('Enter the path to the image: ').strip()
+        parser.print_help()
+        return 1
 
     if not os.path.exists(image_path):
         print(f"Input image {image_path!r} not found.")
