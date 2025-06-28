@@ -7,6 +7,7 @@ This repository provides a simple script to upscale images. When PyTorch and the
 - Python 3.9+
 - [Pillow](https://pillow.readthedocs.io/en/stable/)
 - Optional: [PyTorch](https://pytorch.org/) with CUDA and the [`diffusers`](https://github.com/huggingface/diffusers) package for local upscaling
+- Optional: [`transformers`](https://github.com/huggingface/transformers) when using the local model
 - Optional: `requests` for API fallback
 
 ## Usage
@@ -37,3 +38,5 @@ UPSCALE_API_KEY=your-key python3 main.py image.png
 ## Notes
 
 The Stable Diffusion upscaler weights are downloaded automatically from the Hugging Face Hub on first use if internet access is available.
+The library depends on the `transformers` package, so install it alongside
+`diffusers` when running the model locally.

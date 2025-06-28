@@ -6,6 +6,7 @@ torch
 torchvision
 diffusers
 huggingface-hub
+transformers
 scikit-image
 requests
 

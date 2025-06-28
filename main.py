@@ -6,6 +6,9 @@ from PIL import Image
 import torch
 try:
     from diffusers import StableDiffusionUpscalePipeline
+    import importlib.util
+    if importlib.util.find_spec("transformers") is None:
+        raise ImportError("transformers library is missing")
     HAS_DIFFUSERS = True
 except ImportError:  # pragma: no cover - optional dependency
     HAS_DIFFUSERS = False
