@@ -4,6 +4,8 @@ opencv-python
 Pillow
 torch
 torchvision
-realesrgan
+diffusers
+huggingface-hub
 scikit-image
+requests
 
