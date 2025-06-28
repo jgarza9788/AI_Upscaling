@@ -4,6 +4,7 @@ opencv-python
 Pillow
 torch
 torchvision
+realesrgan
 scikit-image
 requests
 
