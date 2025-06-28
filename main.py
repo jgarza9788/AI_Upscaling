@@ -31,11 +31,15 @@ def upscale_local(image_path: str, output_path: str, scale: int = 4):
 
 
 def upscale_via_api(image_path: str, output_path: str, api_endpoint: str, api_key: str | None = None):
-    import requests
     """Fallback method that sends the image to an external API."""
-    headers = {}
-    if api_key:
-        headers['api-key'] = api_key
+    import requests
+
+    if not api_key:
+        raise RuntimeError(
+            "API key required for fallback upscaling. Provide via --api-key or UPSCALE_API_KEY."
+        )
+
+    headers = {'api-key': api_key}
 
     with open(image_path, 'rb') as f:
         files = {'image': f}
@@ -91,8 +95,12 @@ def main(path_to_file: str | None = None):
         print(f"Image upscaled using local GPU: {output_path}")
     except Exception as exc:
         print(f"Local upscaling failed ({exc}), using API fallback...")
-        upscale_via_api(image_path, output_path, args.api_endpoint, args.api_key)
-        print(f"Image upscaled using API: {output_path}")
+        try:
+            upscale_via_api(image_path, output_path, args.api_endpoint, args.api_key)
+            print(f"Image upscaled using API: {output_path}")
+        except Exception as api_exc:
+            print(f"API upscaling failed: {api_exc}")
+            return 1
 
 
 if __name__ == '__main__':

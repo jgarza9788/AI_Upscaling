@@ -24,6 +24,10 @@ If run without arguments, the script prints its available options along with an 
 - `--api-endpoint`: URL of the fallback API.
 - `--api-key`: API key used for the fallback API.
 
+The fallback API requires a valid API key. If the key is missing or invalid,
+the script will exit with an error message. Supply the key on the command line
+or via the `UPSCALE_API_KEY` environment variable.
+
 Set `UPSCALE_API_ENDPOINT` and `UPSCALE_API_KEY` environment variables to avoid passing them on every run.
 
 ```bash
